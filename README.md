@@ -71,9 +71,10 @@ You can change the position where two links are connected
 ```cpp
 math::Pose jointOrigin(0.00,0.00,0.00,0.00,-0.00,0.00);
 ```
+
 ## Here is the plugin version for gazebo 9.0.0
  [pegasus_gazebo_plugins_Gv9.zip](https://github.com/wojiaojiao/pegasus_gazebo_plugins/files/3475518/pegasus_gazebo_plugins_Gv9.zip)
- Related reference：https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues/3
+ <br>Related reference：https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues/3
 
 ## Bugs & Feature Requests
 Please report bugs and request features using the [Issue Tracker](https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues).
