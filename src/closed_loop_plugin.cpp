@@ -15,7 +15,7 @@ ClosedLoopPlugin::ClosedLoopPlugin()
 
 ClosedLoopPlugin::~ClosedLoopPlugin()
 {
-  event::Events::DisconnectWorldUpdateBegin(this->updateConnection);
+  this->updateConnection.reset();
 
   kill_sim = true;
 }
@@ -25,7 +25,7 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   ros::NodeHandle model_nh;
   model_ = _parent;
   world_ = model_->GetWorld();
-  physics_ = world_->GetPhysicsEngine();
+  physics_ = world_->Physics();
 
   // Error message if the model couldn't be found
   if (!model_)
@@ -85,10 +85,10 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   //model_->CreateJoint(joint_name_,"revolute",parent_,child_);
   physics::JointPtr j = physics_->CreateJoint("revolute");
          j->SetName(joint_name_);
-         math::Pose jointOrigin(0.00,0.00,0.00,0.00,-0.00,0.00);
+         ignition::math::Pose3d jointOrigin(0.00,0.00,0.00,0.00,-0.00,0.00);
          j->Load(parent_,child_,jointOrigin);
          j->Init();
-         math::Vector3 jointaxis(0,1,0);
+         ignition::math::Vector3d jointaxis(0,1,0);
          j->SetAxis(0,jointaxis);
 
 }
@@ -96,7 +96,7 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
 void ClosedLoopPlugin::UpdateChild()
 {
-  static ros::Duration period(world_->GetPhysicsEngine()->GetMaxStepSize());
+  static ros::Duration period(world_->Physics()->GetMaxStepSize());
 
 }
 
