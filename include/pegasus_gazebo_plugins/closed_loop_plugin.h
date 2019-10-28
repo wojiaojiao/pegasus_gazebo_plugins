@@ -17,6 +17,7 @@
 #include <gazebo/common/common.hh>
 //
 #include <ignition/math/Pose3.hh>
+#include <vector>
 
 namespace gazebo
 {
@@ -30,8 +31,13 @@ namespace gazebo
       void UpdateChild();
 
     private:
+      std::vector<float> Convert_to_float(const std::vector<std::string>& subject);
+      std::vector<std::string> Split_String(const std::string& subject);
+
       // Parameters
       std::string joint_name_, child_name_, parent_name_;
+      std::string rotation_;
+      std::string position_;
 
       sdf::ElementPtr insert_sdf_;
 
