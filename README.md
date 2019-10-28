@@ -39,8 +39,8 @@ This closed_loop_plugin just like a button that connects two links,
 <br>`<joint>` the name of the added joint
 <br>`<child>` the name that child coordinate of the added joint 
 <br>`<parent>` the name that parent coordinate of the added joint 
-<br>`<position>` the position where two links are connected
-<br>`<rotation>` the rotation where two links are connected
+<br>`<position>` the position where two links are connected，x,y,z．
+<br>`<rotation>` the rotation where two links are connected，roll,pitch,yaw．
 
 `add to your robot.urdf：`
 
