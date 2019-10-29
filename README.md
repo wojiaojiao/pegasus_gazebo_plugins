@@ -72,7 +72,7 @@ The following is a four-link closed-loop chain
 
 
 ## Here is the plugin version for gazebo 9.0.0
- [pegasus_gazebo_plugins_Gv9.zip](https://github.com/wojiaojiao/pegasus_gazebo_plugins/files/3475518/pegasus_gazebo_plugins_Gv9.zip)
+ [pegasus_gazebo_plugins_Gv9_v2.zip(https://github.com/wojiaojiao/pegasus_gazebo_plugins/files/3778918/pegasus_gazebo_plugins_Gv9_v2.zip)
  <br><br>Related reference：https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues/3
 
 ## Bugs & Feature Requests
