@@ -37,8 +37,10 @@ In order to install the pegasus_gazebo_plugins, clone the latest version from th
 ## Usage
 This closed_loop_plugin just like a button that connects two links,
 <br>`<joint>` the name of the added joint
-<br>`<child>` the name that child coordinate of the added joint
-<br>`<parent>` the name that parent coordinate of the added joint
+<br>`<child>` the name that child coordinate of the added joint 
+<br>`<parent>` the name that parent coordinate of the added joint 
+<br>`<position>` the position where two links are connected,x,y,z．
+<br>`<rotation>` the rotation where two links are connected,roll,pitch,yaw．
 
 `add to your robot.urdf：`
 
@@ -48,8 +50,8 @@ This closed_loop_plugin just like a button that connects two links,
            <joint>add_joint</joint>
            <child>add_joint_child_link</child>
            <parent>add_joint_parent_link</parent>
-           <rotation>0 0 0</rotation>
-           <position>0.00 -0.00 0.00</position>
+           <position>0.0 0.0 0.0</position>
+           <rotation>0.00 -0.00 0.00</rotation>
        </plugin>
      </gazebo>
 ```
@@ -61,13 +63,17 @@ The following is a four-link closed-loop chain
            <joint>red_green_joint</joint>
            <child>red_link</child>
            <parent>green_link</parent>
-           <rotation>0 0 0</rotation>
-           <position>0.00 -0.00 0.00</position>
+           <position>0.0 0.0 0.0</position>
+           <rotation>0.00 -0.00 0.00</rotation>
        </plugin>
      </gazebo>
 ```
-<br>![](https://github.com/wojiaojiao/pegasus_gazebo_plugins/raw/master/doc/diagram1.png)
+<br>![](https://github.com/wojiaojiao/pegasus_gazebo_plugins/raw/master/doc/diagram1.png) 
 
+
+## Here is the plugin version for gazebo 9.0.0
+ [pegasus_gazebo_plugins_Gv9_v2.zip](https://github.com/wojiaojiao/pegasus_gazebo_plugins/files/3778918/pegasus_gazebo_plugins_Gv9_v2.zip)
+ <br><br>Related reference：https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues/3
 
 ## Bugs & Feature Requests
 Please report bugs and request features using the [Issue Tracker](https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues).

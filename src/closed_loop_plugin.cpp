@@ -2,7 +2,6 @@
 #include <math.h>
 #include <vector>
 
-
 namespace gazebo
 {
 
@@ -83,6 +82,19 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     ROS_ERROR("No Link named %s. ClosedLoopPlugin could not be loaded.", parent_name_.c_str());
     return;
   }
+  //we get the string given into the <rotation> tag
+  rotation_ = _sdf->GetElement("rotation")->Get<std::string>();
+  //we get the string given into the <position> tag
+  position_ = _sdf->GetElement("position")->Get<std::string>();
+
+  //we convert the strings into a string vector, spliting it at each space using the function Split_String
+  std::vector<std::string> rotations_splited = Split_String(rotation_);
+  std::vector<std::string> positions_splited = Split_String(position_);
+
+  //we convert the splited string vector into floats
+  std::vector<float>  rotations_splited_converted = Convert_to_float(rotations_splited);
+  std::vector<float>  positions_splited_converted = Convert_to_float(positions_splited);
+
 
   // we get the string given into the <rotation> tag
   rotation_ = _sdf->GetElement("rotation")->Get<std::string>();
@@ -153,3 +165,4 @@ void ClosedLoopPlugin::UpdateChild()
 GZ_REGISTER_MODEL_PLUGIN(ClosedLoopPlugin);
 
 }
+
