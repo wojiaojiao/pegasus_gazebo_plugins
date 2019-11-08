@@ -97,22 +97,26 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
   // model_->CreateJoint(joint_name_,"revolute",parent_,child_);
   physics::JointPtr j = physics_->CreateJoint("revolute");
-         j->SetName(joint_name_);
-         //math::Pose doesn't work too so we change it to ignition::math::Pose3d
-         ignition::math::Pose3d jointOrigin = ignition::math::Pose3d(
-                                                                      positions_splited_converted[0],
-                                                                      positions_splited_converted[1],
-                                                                      positions_splited_converted[2],
-                                                                      rotations_splited_converted[0],
-                                                                      rotations_splited_converted[1],
-                                                                      rotations_splited_converted[2] );
-         j->Load(parent_,child_,jointOrigin);
-         j->Init();
-         // vector3 is changed to vector3d
-         ignition::math::Vector3d jointaxis = ignition::math::Vector3d(0,1,0);
-         j->SetAxis(0,jointaxis);
+  j->SetName(joint_name_);
+  //math::Pose doesn't work too so we change it to ignition::math::Pose3d
+  ignition::math::Pose3d jointOrigin = ignition::math::Pose3d(
+                                                              positions_splited_converted[0],
+                                                              positions_splited_converted[1],
+                                                              positions_splited_converted[2],
+                                                              rotations_splited_converted[0],
+                                                              rotations_splited_converted[1],
+                                                              rotations_splited_converted[2] );
+  // Of parent and child links are not in same position, Gazebo will join the links at this distance
+  // Therefore move the child frame first
+  child_->SetWorldPose(parent_->WorldPose(), true, true);
+  j->Attach(parent_, child_);
+  j->Load(parent_,child_,jointOrigin);
+  j->Init();
+  // vector3 is changed to vector3d
+  ignition::math::Vector3d jointaxis = ignition::math::Vector3d(0,1,0);
+  j->SetAxis(0,jointaxis);
 
-         printf("\n__ClosedLoopPlugin Load finished___\n");
+  printf("\n__ClosedLoopPlugin Load finished___\n");
 }
 
 // function used to split a string at each space into a string vector
