@@ -14,18 +14,18 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(gazebo REQUIRED)
 find_package(Boost REQUIRED)
 
-link_directories(${GAZEBO_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS} include)
-
-add_library(pegasus_gazebo_closed_loop_plugin src/closed_loop_plugin.cpp)
-target_link_libraries(pegasus_gazebo_closed_loop_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
 catkin_package(
   DEPENDS
     roscpp
     gazebo_ros
     control_toolbox
 )
+
+link_directories(${GAZEBO_LIBRARY_DIRS})
+include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS} include)
+
+add_library(pegasus_gazebo_closed_loop_plugin src/closed_loop_plugin.cpp)
+target_link_libraries(pegasus_gazebo_closed_loop_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
