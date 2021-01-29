@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
+cmake_policy(SET CMP0054 NEW)
+
 project(pegasus_gazebo_plugins)
 #原来的文件里是没这句的，没这个就会出错
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
