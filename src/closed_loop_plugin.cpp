@@ -16,7 +16,7 @@ ClosedLoopPlugin::ClosedLoopPlugin()
 
 ClosedLoopPlugin::~ClosedLoopPlugin()
 {
-  event::Events::DisconnectWorldUpdateBegin(this->updateConnection);
+  this->updateConnection.reset();
 
   kill_sim = true;
 }
@@ -26,7 +26,9 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   ros::NodeHandle model_nh;
   model_ = _parent;
   world_ = model_->GetWorld();
-  physics_ = world_->GetPhysicsEngine();
+  // in the new gazebo version GetPhysicsEngine(); don't work we need to use
+  // the new version of it : Physics();
+  physics_ = world_->Physics();
 
   // Error message if the model couldn't be found
   if (!model_)
@@ -67,8 +69,6 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
   parent_name_ = _sdf->GetElement("parent")->Get<std::string>();
 
-
-
   child_ = model_->GetLink(child_name_);
   if(!child_)
   {
@@ -95,35 +95,33 @@ void ClosedLoopPlugin::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   std::vector<float>  rotations_splited_converted = Convert_to_float(rotations_splited);
   std::vector<float>  positions_splited_converted = Convert_to_float(positions_splited);
 
-
-  //model_->CreateJoint(joint_name_,"revolute",parent_,child_);
+  // model_->CreateJoint(joint_name_,"revolute",parent_,child_);
   physics::JointPtr j = physics_->CreateJoint("revolute");
-         j->SetName(joint_name_);
-         //math::Pose doesn't work too so we change it to ignition::math::Pose3d
-         ignition::math::Pose3d jointOrigin = ignition::math::Pose3d(
-                                                                        positions_splited_converted[0],
-                                                                        positions_splited_converted[1],
-                                                                        positions_splited_converted[2],
-                                                                        rotations_splited_converted[0],
-                                                                        rotations_splited_converted[1],
-                                                                        rotations_splited_converted[2]
-                                                                      );
+  j->SetName(joint_name_);
+  //math::Pose doesn't work too so we change it to ignition::math::Pose3d
+  ignition::math::Pose3d jointOrigin = ignition::math::Pose3d(
+                                                              positions_splited_converted[0],
+                                                              positions_splited_converted[1],
+                                                              positions_splited_converted[2],
+                                                              rotations_splited_converted[0],
+                                                              rotations_splited_converted[1],
+                                                              rotations_splited_converted[2] );
+  // Of parent and child links are not in same position, Gazebo will join the links at this distance
+  // Therefore move the child frame first
+  child_->SetWorldPose(parent_->WorldPose(), true, true);
+  j->Attach(parent_, child_);
+  j->Load(parent_,child_,jointOrigin);
+  j->Init();
+  // vector3 is changed to vector3d
+  ignition::math::Vector3d jointaxis = ignition::math::Vector3d(0,1,0);
+  j->SetAxis(0,jointaxis);
 
-         j->Load(parent_,child_,jointOrigin);
-         j->Init();
-         //vector3 is changed to vector3d
-         ignition::math::Vector3d jointaxis = ignition::math::Vector3d(0,1,0);
-         j->SetAxis(0,jointaxis);
-
-         printf("\n__ClosedLoopPlugin Load finished___\n");
-
+  printf("\n__ClosedLoopPlugin Load finished___\n");
 }
 
-//function used to split a string at each space into a string vector
+// function used to split a string at each space into a string vector
 std::vector<std::string> ClosedLoopPlugin::Split_String(const std::string& subject)
 {
-
-
   std::vector<std::string> array;
   std::stringstream ss(subject);
   std::string tmp;
@@ -131,35 +129,27 @@ std::vector<std::string> ClosedLoopPlugin::Split_String(const std::string& subje
   {
     array.push_back(tmp);
   }
-
   return array;
 }
 
-//function used to convert a string vector to a float vector
+// function used to convert a string vector to a float vector
 std::vector<float> ClosedLoopPlugin::Convert_to_float(const std::vector<std::string>& subject)
 {
-
   std::vector<float> results(subject.size());
-
 
   for(int i = 0; i<subject.size();i++)
   {
-
     results[i] = (float)std::atof(subject[i].c_str());
-
-
   }
-
   return results;
-
 }
 
 
 
 void ClosedLoopPlugin::UpdateChild()
 {
-  static ros::Duration period(world_->GetPhysicsEngine()->GetMaxStepSize());
-
+  // same here, GetPhysicsEngine() is not available anymore
+  static ros::Duration period(world_->Physics()->GetMaxStepSize());
 }
 
 GZ_REGISTER_MODEL_PLUGIN(ClosedLoopPlugin);

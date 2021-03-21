@@ -25,7 +25,7 @@ This is pegasus_gazebo_plugins package developed for our quadruped robot "Pegasu
 The URDF served the ROS, it has several notable shortcomings.one is it does not support closed loop chains.
 <br>The SDF served the gazebo, support closed loop chains - this can be achieved by allowing two different joints to have the same child link but different parents
 <br>The closed_loop_plugin works after the robot model is converted from urdf to sdf, inserting a new joint into the SDF.
-<br>![](https://github.com/wojiaojiao/pegasus_gazebo_plugins/raw/master/doc/diagram2.png) 
+<br>![](https://github.com/wojiaojiao/pegasus_gazebo_plugins/raw/master/doc/diagram2.png)
 ## Building
 In order to install the pegasus_gazebo_plugins, clone the latest version from this repository into your catkin workspace and compile the package using ROS.
 
@@ -77,5 +77,3 @@ The following is a four-link closed-loop chain
 
 ## Bugs & Feature Requests
 Please report bugs and request features using the [Issue Tracker](https://github.com/wojiaojiao/pegasus_gazebo_plugins/issues).
-
-
